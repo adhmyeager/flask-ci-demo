@@ -1,4 +1,3 @@
-Set-Content Jenkinsfile @'
 pipeline {
     agent any
 
@@ -87,4 +86,3 @@ pipeline {
         }
     }
 }
-'@
