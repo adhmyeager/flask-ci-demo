@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cool Website</title>
+  <meta name="description" content="A modern, responsive single-file template with animations and dark mode." />
+
+  <!-- Basic styles and variables -->
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card: rgba(255,255,255,0.06);
+      --muted: #9aa4b2;
+      --accent1: #7c5cff;
+      --accent2: #00d4ff;
+      --glass: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.08);
+      --radius: 14px;
+      --max-width: 1100px;
+      --ff: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* Dark and light theme toggling */
+    :root[data-theme="light"]{
+      --bg: #f6f8fb;
+      --card: rgba(10,14,20,0.03);
+      --muted: #5b6b7a;
+      --glass: rgba(255,255,255,0.8);
+      --glass-border: rgba(10,14,20,0.06);
+      color-scheme: light;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:var(--ff);
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.12), transparent),
+                  radial-gradient(900px 500px at 90% 90%, rgba(0,212,255,0.06), transparent),
+                  var(--bg);
+      color: #e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+
+    .container{
+      max-width:var(--max-width);
+      margin:0 auto;
+      padding:48px 24px;
+    }
+
+    /* Header */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:36px;
+    }
+
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      text-decoration:none;
+      color:inherit;
+    }
+
+    .logo{
+      width:48px;
+      height:48px;
+      border-radius:12px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:grid;
+      place-items:center;
+      font-weight:700;
+      box-shadow:0 6px 20px rgba(0,0,0,0.35);
+    }
+
+    nav{
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+
+    nav a{
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:600;
+      padding:8px 12px;
+      border-radius:10px;
+      transition:all .18s ease;
+    }
+
+    nav a:hover{
+      color: #fff;
+      transform:translateY(-2px);
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .btn{
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+      border:none;
+      color:#fff;
+      padding:10px 14px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:700;
+      box-shadow:0 8px 30px rgba(124,92,255,0.12);
+    }
+
+    .ghost{
+      background:transparent;
+      border:1px solid var(--glass-border);
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:10px;
+      cursor:pointer;
+    }
+
+    /* Hero */
+    .hero{
+      display:grid;
+      grid-template-columns:1fr 420px;
+      gap:28px;
+      align-items:center;
+      margin-bottom:40px;
+    }
+
+    .hero-card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-radius:var(--radius);
+      padding:36px;
+      box-shadow:0 10px 40px rgba(2,6,23,0.6);
+      border:1px solid var(--glass-border);
+      backdrop-filter: blur(8px) saturate(120%);
+    }
+
+    h1{
+      margin:0 0 12px 0;
+      font-size:clamp(28px,4vw,44px);
+      line-height:1.02;
+      letter-spacing:-0.02em;
+    }
+
+    p.lead{
+      margin:0 0 18px 0;
+      color:var(--muted);
+      font-size:1.05rem;
+    }
+
+    .features{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .feature{
+      background:var(--card);
+      padding:10px 12px;
+      border-radius:12px;
+      color:var(--muted);
+      font-weight:700;
+      font-size:0.9rem;
+      border:1px solid var(--glass-border);
+    }
+
+    /* Right column preview */
+    .preview{
+      height:320px;
+      border-radius:12px;
+      overflow:hidden;
+      position:relative;
+      border:1px solid var(--glass-border);
+    }
+
+    .preview .mock{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(135deg, rgba(124,92,255,0.12), rgba(0,212,255,0.06));
+      display:grid;
+      place-items:center;
+      color:#fff;
+      font-weight:700;
+      font-size:1.1rem;
+      letter-spacing:0.02em;
+    }
+
+    /* Grid of cards */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+      margin-top:18px;
+    }
+
+    .card{
+      background:var(--card);
+      padding:18px;
+      border-radius:12px;
+      border:1px solid var(--glass-border);
+      transition:transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s;
+    }
+
+    .card:hover{
+      transform:translateY(-8px) scale(1.02);
+      box-shadow:0 18px 50px rgba(2,6,23,0.6);
+    }
+
+    .card h3{
+      margin:0 0 8px 0;
+      font-size:1.05rem;
+    }
+
+    .card p{
+      margin:0;
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+
+    /* Footer */
+    footer{
+      margin-top:48px;
+      padding-top:24px;
+      border-top:1px solid var(--glass-border);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{ grid-template-columns:1fr; }
+      .grid{ grid-template-columns:repeat(2,1fr); }
+    }
+
+    @media (max-width:640px){
+      .grid{ grid-template-columns:1fr; }
+      nav{ display:none; }
+      header{ gap:10px; }
+    }
+
+    /* Small utility */
+    .muted{ color:var(--muted); font-size:0.95rem; }
+    .pill{ display:inline-block; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,0.03); color:var(--muted); font-weight:700; }
+    .sr-only{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a class="brand" href="#">
+        <div class="logo">C</div>
+        <div>
+          <div style="font-weight:800">CoolSite</div>
+          <div class="muted" style="font-size:0.85rem">Design · Code · Launch</div>
+        </div>
+      </a>
+
+      <nav aria-label="Main navigation">
+        <a href="#features">Features</a>
+        <a href="#showcase">Showcase</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="actions">
+        <button class="ghost" id="themeToggle" aria-pressed="false" title="Toggle theme">🌙</button>
+        <button class="btn" id="cta">Get Started</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-card" role="region" aria-labelledby="heroTitle">
+          <h1 id="heroTitle">A modern template for bold ideas</h1>
+          <p class="lead">Fast, responsive, and crafted with subtle motion. Use this single-file starter to prototype landing pages, portfolios, and side projects.</p>
+
+          <div class="features" aria-hidden="false">
+            <span class="feature">Responsive</span>
+            <span class="feature">Dark Mode</span>
+            <span class="feature">Glassmorphism</span>
+            <span class="feature">Accessible</span>
+          </div>
+
+          <div style="margin-top:20px; display:flex; gap:12px; align-items:center;">
+            <button class="btn" id="demoBtn">Live Demo</button>
+            <a class="ghost" href="#showcase">Explore</a>
+          </div>
+
+          <div class="grid" style="margin-top:22px;">
+            <div class="card">
+              <h3>Lightning fast</h3>
+              <p>Minimal dependencies and optimized CSS for quick load times.</p>
+            </div>
+            <div class="card">
+              <h3>Beautiful UI</h3>
+              <p>Clean typography, balanced spacing, and subtle depth.</p>
+            </div>
+            <div class="card">
+              <h3>Easy to customize</h3>
+              <p>Variables and simple structure let you adapt the look quickly.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="preview" aria-hidden="false">
+          <div class="mock" id="mockPreview">Interactive preview panel</div>
+        </aside>
+      </section>
+
+      <section id="showcase" style="margin-top:18px;">
+        <div style="display:flex; gap:18px; align-items:center; justify-content:space-between; margin-bottom:12px;">
+          <h2 style="margin:0">Showcase</h2>
+          <div class="pill">New components</div>
+        </div>
+
+        <div class="grid" style="grid-template-columns:repeat(3,1fr);">
+          <div class="card">
+            <h3>Project Aurora</h3>
+            <p class="muted">A landing page with animated hero and pricing cards.</p>
+          </div>
+          <div class="card">
+            <h3>Studio Portfolio</h3>
+            <p class="muted">Grid-based gallery with lightbox-ready images.</p>
+          </div>
+          <div class="card">
+            <h3>Product Dashboard</h3>
+            <p class="muted">Clean charts, cards, and responsive tables.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" style="margin-top:28px;">
+        <div style="display:flex; gap:18px; align-items:flex-start; flex-wrap:wrap;">
+          <div style="flex:1; min-width:260px;">
+            <h2 style="margin-top:0">Get in touch</h2>
+            <p class="muted">Questions, collabs, or feedback — drop a line and we’ll reply soon.</p>
+          </div>
+
+          <form style="min-width:320px; max-width:520px; width:100%; background:var(--card); padding:18px; border-radius:12px; border:1px solid var(--glass-border);" onsubmit="event.preventDefault(); alert('Thanks — message sent (demo)');">
+            <label class="sr-only" for="name">Name</label>
+            <input id="name" placeholder="Your name" required style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid var(--glass-border); background:transparent; color:inherit;" />
+
+            <label class="sr-only" for="email">Email</label>
+            <input id="email" type="email" placeholder="Email" required style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid var(--glass-border); background:transparent; color:inherit;" />
+
+            <label class="sr-only" for="message">Message</label>
+            <textarea id="message" placeholder="Message" rows="4" required style="width:100%; padding:10px; margin-bottom:12px; border-radius:8px; border:1px solid var(--glass-border); background:transparent; color:inherit;"></textarea>
+
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+              <button class="ghost" type="reset">Reset</button>
+              <button class="btn" type="submit">Send</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>© <strong>CoolSite</strong> 2026</div>
+      <div class="muted">Built with care · Crafted for speed</div>
+    </footer>
+  </div>
+
+  <!-- Small interactive script -->
+  <script>
+    // Theme toggle with persistence
+    (function(){
+      const root = document.documentElement;
+      const btn = document.getElementById('themeToggle');
+      const stored = localStorage.getItem('site-theme');
+      if(stored) root.setAttribute('data-theme', stored);
+      btn.addEventListener('click', () => {
+        const current = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        root.setAttribute('data-theme', current);
+        localStorage.setItem('site-theme', current);
+        btn.setAttribute('aria-pressed', current === 'light');
+        btn.textContent = current === 'light' ? '☀️' : '🌙';
+      });
+      // initialize button icon
+      const initTheme = root.getAttribute('data-theme') === 'light' ? '☀️' : '🌙';
+      btn.textContent = initTheme;
+      btn.setAttribute('aria-pressed', root.getAttribute('data-theme') === 'light');
+    })();
+
+    // Small demo interactions
+    document.getElementById('demoBtn').addEventListener('click', () => {
+      const mock = document.getElementById('mockPreview');
+      mock.animate([{ transform:'translateY(0) scale(1)' }, { transform:'translateY(-8px) scale(1.02)' }, { transform:'translateY(0) scale(1)' }], { duration:700, easing:'cubic-bezier(.2,.9,.2,1)' });
+    });
+
+    document.getElementById('cta').addEventListener('click', () => {
+      window.scrollTo({ top: document.querySelector('#contact').offsetTop - 20, behavior:'smooth' });
+    });
+
+    // Small accessibility enhancement: prefers-reduced-motion
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      document.querySelectorAll('*').forEach(el => el.style.transitionDuration = '0s');
+    }
+  </script>
+</body>
+</html>
