@@ -1,3 +1,4 @@
+Set-Content Jenkinsfile @'
 pipeline {
     agent any
 
@@ -12,14 +13,14 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo '📥 Cloning repository...'
+                echo 'Cloning repository...'
                 checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                echo '📦 Installing dependencies & linting...'
+                echo 'Installing dependencies and linting...'
                 sh '''
                     python3 -m venv venv
                     . venv/bin/activate
@@ -33,7 +34,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo '🧪 Running tests with coverage...'
+                echo 'Running tests with coverage...'
                 sh '''
                     . venv/bin/activate
                     pytest tests/ -v --cov=app \
@@ -43,21 +44,14 @@ pipeline {
             }
             post {
                 always {
-                    // Publish coverage report in Jenkins
-                    publishHTML(target: [
-                        allowMissing: true,
-                        alwaysLinkToLastBuild: true,
-                        reportDir: '.',
-                        reportFiles: 'coverage.xml',
-                        reportName: 'Coverage Report'
-                    ])
+                    archiveArtifacts artifacts: 'coverage.xml', allowEmptyArchive: true
                 }
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                echo '🐳 Building Docker image...'
+                echo 'Building Docker image...'
                 sh '''
                     docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
                     docker tag  ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest
@@ -67,19 +61,15 @@ pipeline {
 
         stage('Deploy Container') {
             steps {
-                echo '🚀 Deploying container...'
+                echo 'Deploying container...'
                 sh '''
-                    # Stop & remove any existing container
                     docker rm -f ${CONTAINER_NAME} || true
-
-                    # Run the new container
                     docker run -d \
                         --name ${CONTAINER_NAME} \
                         -p ${APP_PORT}:5000 \
                         --restart unless-stopped \
                         ${IMAGE_NAME}:latest
-
-                    echo "✅ App running at http://localhost:${APP_PORT}"
+                    echo "App running at http://localhost:${APP_PORT}"
                 '''
             }
         }
@@ -87,14 +77,14 @@ pipeline {
 
     post {
         success {
-            echo '🎉 Pipeline succeeded! App is live.'
+            echo 'Pipeline succeeded! App is live.'
         }
         failure {
-            echo '❌ Pipeline failed. Check the logs above.'
+            echo 'Pipeline failed. Check the logs above.'
         }
         always {
-            // Clean up venv to keep workspace tidy
             sh 'rm -rf venv || true'
         }
     }
 }
+'@
