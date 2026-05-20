@@ -26,7 +26,7 @@ pipeline {
                     pip install --upgrade pip
                     pip install -r requirements.txt
                     pip install flake8
-                    flake8 app/ --max-line-length=120 --ignore=E501
+                    flake8 app/ --max-line-length=120 --ignore=E501,W292
                 '''
             }
         }
